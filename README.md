@@ -6,9 +6,9 @@ The project will be archived using the zip format. The name of the archive shoul
 Inside the archive you should have the following structure:
 * lib: director care conține codul preluat din alte surse (curs, seminarii, biblioteci sau fragmente de cod preluate de pe internet, etc);
 * media: director care conține elementele media utilizate în cadrul proiectului (imagini, sunete, video, fișiere de date);
-* CodTema_NrGrupa_NUME_Prenume.html: fișier care conține codul HTML aferent proiectului;
-* CodTema_NrGrupa_NUME_Prenume.css: fișier care conține codul CSS aferent proiectului;
-* CodTema_NrGrupa_NUME_Prenume.js: fișier care conține codul JavaScript aferent proiectului.
+* ```CodTema_NrGrupa_NUME_Prenume.html```: fișier care conține codul HTML aferent proiectului;
+* ```CodTema_NrGrupa_NUME_Prenume.css```: fișier care conține codul CSS aferent proiectului;
+* ```CodTema_NrGrupa_NUME_Prenume.js```: fișier care conține codul JavaScript aferent proiectului.
 
 ### Observații pentru fișierele CodTema_NrGrupa_NUME_Prenume.html/css/js:
 * trebuie să conțină doar cod sursă formatat și comentat;
