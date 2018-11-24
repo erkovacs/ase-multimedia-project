@@ -1,0 +1,29 @@
+{
+  "name": "ase-multimedia-project",
+  "version": "1.0.0",
+  "description": "ASE Multimedia Project - Video Player",
+  "main": "index.js",
+  "scripts": {
+    "start": "./node_modules/.bin/http-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codepadawan93/ase-multimedia-project.git"
+  },
+  "keywords": [
+    "video",
+    "player",
+    "html5",
+    "video"
+  ],
+  "author": "kovaroberik@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codepadawan93/ase-multimedia-project/issues"
+  },
+  "homepage": "https://github.com/codepadawan93/ase-multimedia-project#readme",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}
