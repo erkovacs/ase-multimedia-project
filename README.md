@@ -21,14 +21,14 @@ Inside the archive you should have the following structure:
 * 3p - [ ] Develop the application as a Progressive Web Application1 using HTML5, CSS3 and JavaScript (the application should work offline, users should be able to install it on their computers using Google Chrome2).
 * 1p - [x] Responsive design implemented using CSS Media Queries3 or Bootstrap4
 * 1p - [ ] Using one of the following APIs: Web Storage API5, IndexedDB6, WebXR7, (suggest other APIs that you find interesting for your project by sending an email at liviu.cotfas@ase.ro )
-* 4p - [ ] Implement requirements specific to your project topic
+* 4p - [x] Implement requirements specific to your project topic
 
 ## Video Player
 ### Description: 
 Build a video player that allows the user to view the videos in a playlist containing at least 4 videos (statically stored in the application)
 
 ### Requirements (4p):
-* 1p - [ ] posibilitate navigare prin playlist; trecere automată la filmul următor
+* 1p - [x] posibilitate navigare prin playlist; trecere automată la filmul următor
 * 1p - [ ] aplicare de efecte video (selectabile de către utilizator)
 * 2p - [ ] desenare controale (previous, play / pause, next, progress bar) pe canvas
 * 1p - [ ] desenare histogramă în timp real pentru video
