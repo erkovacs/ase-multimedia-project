@@ -1,14 +1,37 @@
 {
     "videos" : [
         {
+            "id": "c66179e0-dd6d-4614-9825-92b6980e3f85",
             "title": "Video Title",
             "subtitle": "Some silly video",
             "src": "http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png"
         },
         {
+            "id": "3297e5be-a265-4a9c-a044-77645eb2ba97",
             "title": "Video Title 2",
             "subtitle": "Other silly video",
+            "src": "http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv",
+            "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png"
+        },
+        {
+            "id": "192756de-ed7f-44ca-8b47-9279a85e16ca",
+            "title": "Video Title 3",
+            "subtitle": "3rd silly video",
+            "src": "http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv",
+            "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png"
+        },
+        {
+            "id": "6e5cdcbd-78e1-469e-94ae-3a9b429a2bad",
+            "title": "Video Title 4",
+            "subtitle": "4th silly video",
+            "src": "http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv",
+            "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png"
+        },
+        {
+            "id": "7d313ee8-5b45-4d09-91ac-0d9d48b150cb",
+            "title": "Video Title 5",
+            "subtitle": "5th silly video",
             "src": "http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv",
             "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png"
         }

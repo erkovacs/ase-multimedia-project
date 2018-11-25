@@ -10,9 +10,19 @@ body {
     margin-top: 1.4rem;
 }
 
+#current-video-title {
+    margin-top: 1.4rem;
+}
+
 #playlist-header {
     padding: 1rem 5px 5px 5px;
     font-size: 1rem;
+}
+
+.playlist-item {
+    padding: 5px;
+    width: 100%;
+    cursor: pointer;
 }
 
 .playlist-image {
@@ -21,4 +31,25 @@ body {
 
 .playlist-image-holder {
     text-align: center;
+}
+
+#download-frame {
+    margin-left: 100%;
+    transform: translate(-100%)
+}
+
+#search-results {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+#video-controls {
+    margin-top: 10px;
+}
+
+.app-error {
+    position: fixed;
+    width: 100%;
+    top: 0px;
 }
