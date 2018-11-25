@@ -17,9 +17,9 @@ Inside the archive you should have the following structure:
 * nu este permis cod preluat din nici o altă sursă (exemple curs / seminar, colegi, internet, etc.); orice fragment de cod preluat din alte surse se consideră tentativă de fraudă; se verifică automat.
 
 ### Project evaluation
-* 1p - Develop the application using HTML5, CSS3 and JavaScript
+* 1p - Develop the application using HTML5, CSS3 and JavaScript [x]
 * 3p - Develop the application as a Progressive Web Application1 using HTML5, CSS3 and JavaScript (the application should work offline, users should be able to install it on their computers using Google Chrome2).
-* 1p - Responsive design implemented using CSS Media Queries3 or Bootstrap4
+* 1p - Responsive design implemented using CSS Media Queries3 or Bootstrap4 [x]
 * 1p - Using one of the following APIs: Web Storage API5, IndexedDB6, WebXR7, (suggest other APIs that you find interesting for your project by sending an email at liviu.cotfas@ase.ro )
 * 4p - Implement requirements specific to your project topic
 
@@ -32,7 +32,7 @@ Build a video player that allows the user to view the videos in a playlist conta
 * 1p - aplicare de efecte video (selectabile de către utilizator)
 * 2p - desenare controale (previous, play / pause, next, progress bar) pe canvas
 * 1p - desenare histogramă în timp real pentru video
-* 1p - salvare cadru curent
+* 1p - salvare cadru curent [x]
 * 1p - afișare subtitrări (stocate sub formă de fișiere JSON în cadrul aplicației)
 
 ## Author
