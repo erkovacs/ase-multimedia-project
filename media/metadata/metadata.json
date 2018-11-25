@@ -1,0 +1,16 @@
+{
+    "videos" : [
+        {
+            "title": "Video Title",
+            "subtitle": "Some silly video",
+            "src": "http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv",
+            "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png"
+        },
+        {
+            "title": "Video Title 2",
+            "subtitle": "Other silly video",
+            "src": "http://upload.wikimedia.org/wikipedia/commons/7/79/Big_Buck_Bunny_small.ogv",
+            "thumbnail": "https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png"
+        }
+    ]
+}
