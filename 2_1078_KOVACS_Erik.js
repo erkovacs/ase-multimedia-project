@@ -4,6 +4,7 @@ let app = {};
 
 app.metadataUrl = './media/metadata/metadata.json';
 app.errorTimeout = 4000;
+app.pauseBetween = 5000;
 app.currentVideoId = null;
 app.isPlaying = false;
 app.autoplay = true;
@@ -53,7 +54,6 @@ app.getPlaylist = function(){
                     const id = this.dataset.id;
                     app.currentVideoId = id;
                     app.currentVideo.pause();
-                    console.log(app.currentVideo.src);
                     app.getPlaylist();
                 })
             })
@@ -79,8 +79,7 @@ app.resetPlaylist = () => {
 app.playlistEntryFactory = (id, header, description, image) => {
     return `
         <div class="row playlist-item" data-id="${id}">
-            <div class="col-md-5" class="playlist-image-holder">
-                <img class="card-text playlist-image" src="${image}"/>
+            <div class="col-md-5 playlist-image-holder" style="background-image: url(${image});">
             </div>
             <div class="card border-light mb-3 col-md-7" style="max-width: 20rem;">
                 <div class="card-header">${header}</div>
@@ -118,6 +117,10 @@ app.loadVideo = function(ctx, title, src){
             requestAnimationFrame(step)
         };
         requestAnimationFrame(step);
+    })
+
+    app.currentVideo.addEventListener('ended', () => {
+        setTimeout(app.playNext, app.pauseBetween);
     })
 }
 
@@ -166,6 +169,24 @@ app.error = err => {
     setTimeout(() => {
         clear();
     }, app.errorTimeout)
+}
+
+app.playNext = () => {
+    // If feature is disabled, don't do anything
+    if(!app.autoplay) return;
+
+    // Find the current video...
+    let i = 0;
+    for (; i < app.playlist.length; i++){
+        if(app.playlist[i].id === app.currentVideoId){
+            break;
+        }
+    }
+    
+    // ... and play the next or the first if current was the last video
+    const { id } = i === app.playlist.length - 1 ? app.playlist[0] : app.playlist[i + 1];
+    app.currentVideoId = id;
+    app.getPlaylist();
 }
 
 app.getSearchResults = searchQuery => {

@@ -31,6 +31,10 @@ body {
 
 .playlist-image-holder {
     text-align: center;
+    background-position: center; 
+    background-size: contain; 
+    background-color: #000; 
+    background-repeat: no-repeat;
 }
 
 #download-frame {
