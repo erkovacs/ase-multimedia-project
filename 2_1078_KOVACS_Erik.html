@@ -3,16 +3,25 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>ErikTube</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" 
+        href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" 
+        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" 
+        crossorigin="anonymous">
     <!-- Roboto font -->
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- Lux Bootstrap theme, just the styles -->
     <link rel="stylesheet" type="text/css" media="screen" href="./lib/css/bootstrap.min.css" />
+    <!-- Assets -->
     <link rel="stylesheet" type="text/css" media="screen" href="2_1078_KOVACS_Erik.css" />
     <script src="2_1078_KOVACS_Erik.js"></script>
 </head>
 <body>
+    <!-- Content -->
     <div class="container-fluid">
+        <!-- Navbar -->
         <div class="row">
             <nav class="navbar navbar-expand-lg navbar-light bg-light col-md-12">
                 <a class="navbar-brand" href="#">ERIKTUBE</a>
@@ -33,10 +42,24 @@
             </nav>
         </div>
     </div>
+    <!-- Main -->
     <div class="container">
         <div class="row">
-            <div class="col-md-8" id="theatre">
-                <canvas id="canvas" class="col-md-12"></canvas>
+            <!-- Theatre -->
+            <div class="col-md-8">
+                <div id="theatre">
+                    <canvas id="canvas"></canvas>
+                    <!-- Controls -->
+                    <div id="theatre-controls">
+                        <div id="scrubber">
+                            <div id="scrubber-fill">
+                            </div>
+                        </div>
+                        <div id="buttons">
+                            <button id="play-pause" class="play"></button>
+                        </div>
+                    </div>
+                </div>
                 <div id="title-bar" class="row">
                     <div class="col-md-9">
                         <h3 id="current-video-title"></h3>
@@ -62,6 +85,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Playlist -->
             <div class="col-md-4">
                 <div class="row" id="playlist-header">
                     <div class="col-md-6">Up next</div>
@@ -74,7 +98,7 @@
                         </div>
                     </div>
                 </div>
-            <div class="row" id="playlist">
+            <div id="playlist">
             </div>
         </div>
     </div>

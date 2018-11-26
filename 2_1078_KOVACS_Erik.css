@@ -4,11 +4,24 @@ body {
 
 #canvas {
     background-color: #000;
+    width: 100%;
+    height: 100%;
+}
+
+#theatre:hover #theatre-controls{
+    transform: translate(0, 0);
+    transition: all 0.3s;
 }
 
 #theatre {
     margin-top: 1.4rem;
+    width: 100%;
+    max-width: 1280px;
+    margin-right: 10px;
+    position: relative;
+    overflow: hidden;
 }
+
 
 #current-video-title {
     margin-top: 1.4rem;
@@ -56,4 +69,62 @@ body {
     position: fixed;
     width: 100%;
     top: 0px;
+}
+
+#playlist .card-header {
+    padding: 2px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Theatre controls */
+#theatre-controls {
+    display: flex;
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    height: 35px;
+    flex-wrap: wrap;
+    background: rgba(0, 0, 0, 0.7);
+    transform: translate(0, calc(100% + 5px));
+}
+
+#buttons button {
+    background: none;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    margin: auto;
+}
+
+#buttons button:before {
+    font-family: 'Font Awesome 5 Free';
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    color: #fff;
+    font-size: 20px;
+}
+
+#buttons button.play:before {
+    content: '\f144';
+}
+
+#buttons button.pause:before {
+    content: '\f28b';
+}
+
+#scrubber {
+    height: 5px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #000;
+}
+
+#scrubber-fill {
+    background: #fff;
+    width: 0%;
+    height: 100%;
 }

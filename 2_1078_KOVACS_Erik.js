@@ -81,10 +81,10 @@ app.playlistEntryFactory = (id, header, description, image) => {
         <div class="row playlist-item" data-id="${id}">
             <div class="col-md-5 playlist-image-holder" style="background-image: url(${image});">
             </div>
-            <div class="card border-light mb-3 col-md-7" style="max-width: 20rem;">
+            <div class="card border-light col-md-7" style="max-width: 20rem;">
                 <div class="card-header">${header}</div>
                 <div class="card-text">
-                    <p>${description}</p>
+                    <p>${description.length > 30 ? description.substring(0, 30) + ' ...' : description}</p>
                 </div>
             </div>
         </div>
@@ -119,9 +119,17 @@ app.loadVideo = function(ctx, title, src){
         requestAnimationFrame(step);
     })
 
+    // Maybe play next video if it has ended
     app.currentVideo.addEventListener('ended', () => {
         setTimeout(app.playNext, app.pauseBetween);
     })
+
+    // Fill scrubber
+    app.currentVideo.addEventListener('timeupdate', () => {
+        const scrubberFill = document.getElementById('scrubber-fill');
+        const position = app.currentVideo.currentTime / app.currentVideo.duration;
+        scrubberFill.style.width = position * 100 + "%";
+    });
 }
 
 // Downloads the current frame as a png image
@@ -248,11 +256,18 @@ window.addEventListener('load', () => {
     // Get the playlist and load the main video
     app.getPlaylist();
 
-    // Trigger the play event on the (invisible) video
-    app.canvas.addEventListener('click', () => {
+    // Trigger the play event on the (invisible) video 
+
+    app.playPauseButton = document.getElementById('play-pause');
+    
+    const playPauseCallback = () => {
         app.isPlaying = !app.isPlaying;
         app.isPlaying ? app.currentVideo.play() : app.currentVideo.pause();
-    })
+        app.playPauseButton.className = app.isPlaying ? 'pause' : 'play';
+    }
+
+    app.canvas.addEventListener('click', playPauseCallback);
+    app.playPauseButton.addEventListener('click', playPauseCallback);
 
     const searchBar = document.getElementById('search');
     searchBar.addEventListener('keyup', function(){
