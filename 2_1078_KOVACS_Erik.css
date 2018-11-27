@@ -99,20 +99,28 @@ body {
 }
 
 #buttons button:before {
-    font-family: 'Font Awesome 5 Free';
     width: 30px;
     height: 30px;
     display: inline-block;
     color: #fff;
     font-size: 20px;
+    font-family: FontAwesome;
 }
 
 #buttons button.play:before {
-    content: '\f144';
+    content: '\f04b';
 }
 
 #buttons button.pause:before {
-    content: '\f28b';
+    content: '\f04c';
+}
+
+#buttons button.mute:before {
+    content: '\f205';
+}
+
+#buttons button.unmute:before {
+    content: '\f204';
 }
 
 #scrubber {
@@ -121,10 +129,17 @@ body {
     left: 0;
     width: 100%;
     background: #000;
+    cursor: pointer;
 }
 
 #scrubber-fill {
     background: #fff;
     width: 0%;
     height: 100%;
+}
+
+#time {
+    margin: 5px 5px auto auto;
+    color: #fefefe;
+    font-size: 0.7rem;
 }

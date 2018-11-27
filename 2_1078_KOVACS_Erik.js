@@ -2,18 +2,17 @@
 
 let app = {};
 
+// TODO:: settings and other stuff should be cached in localStorage
 app.metadataUrl = './media/metadata/metadata.json';
 app.errorTimeout = 4000;
 app.pauseBetween = 5000;
 app.currentVideoId = null;
 app.isPlaying = false;
+app.isMute = true;
 app.autoplay = true;
 app.playlist = [];
 
-// This is where the fun is. It loads the videos and loads the first one in the list.
-// Imperfect but functional 
-// TODO :: do not call this every time user clicks on video. Rather, pull the data
-// from the playlist - to be implemented if there's time
+// This is where the fun is. It gets the videos and loads the first one in the list.
 app.getPlaylist = function(){
 
     // Start with an empty playlist. Easier this way
@@ -38,6 +37,10 @@ app.getPlaylist = function(){
                 // Conversely, if we know which video was chosen, load that
                 // Do not add the current video to list, just like YouTube
                 if(app.currentVideoId === null && i === 0 || app.currentVideoId === id){
+
+                    // Set the id in case it was null
+                    if(!app.currentVideoId) app.currentVideoId = id;
+
                     app.loadVideo(app.ctx, title, src);
                     return;
                 }
@@ -57,7 +60,8 @@ app.getPlaylist = function(){
                     app.getPlaylist();
                 })
             })
-        });
+        })
+        .catch(e => app.error(e));
 }
 
 app.refreshCanvas = () => {
@@ -107,6 +111,7 @@ app.loadVideo = function(ctx, title, src){
     
     app.currentVideo = document.createElement("video");
     app.currentVideo.src = src;
+    if(app.autoplay) app.currentVideo.muted = true;
     
     // When playing the video, we will copy frame by frame to canvas
     app.currentVideo.addEventListener('play', () => {
@@ -124,16 +129,40 @@ app.loadVideo = function(ctx, title, src){
         setTimeout(app.playNext, app.pauseBetween);
     })
 
-    // Fill scrubber
+    // Fill scrubber and update timestamp
+    const scrubberFill = document.getElementById('scrubber-fill');
+    const time = document.getElementById('time');
+
+    // Little helper function
+    const timeParse = t => {
+        const minutes = Math.floor(t / 60).toString();
+        const seconds = Math.floor(t - minutes * 60).toString();
+        return `${minutes.length > 1 ? minutes : 0 + minutes}:${seconds.length > 1 ? seconds : 0 + seconds}`;
+    }
+    // TODO :: Fix this slowness here
     app.currentVideo.addEventListener('timeupdate', () => {
-        const scrubberFill = document.getElementById('scrubber-fill');
         const position = app.currentVideo.currentTime / app.currentVideo.duration;
         scrubberFill.style.width = position * 100 + "%";
+        // time.innerHTML = `${timeParse(app.currentVideo.currentTime)} / ${timeParse(app.currentVideo.duration)}`;
     });
+
+    // Allow user to scrub through the video
+    const scrubber = document.getElementById('scrubber');
+    scrubber.addEventListener('click', event => {
+        // Do not allow video to pause
+        event.stopPropagation();
+        const {offsetX, offsetY} = event;
+        const whereTo = offsetX / scrubber.offsetWidth * app.currentVideo.duration;
+        app.currentVideo.currentTime = whereTo;
+    })
+
+    // If autoplay was enabled, start the video
+    if(app.autoplay) app.currentVideo.play();
 }
 
 // Downloads the current frame as a png image
 app.downloadCurrentFrame = () => {
+    // Create a link to an in-memory png and simulate a click on that
     const download = document.createElement('a');
     try {
         const image = app.canvas
@@ -192,7 +221,7 @@ app.playNext = () => {
     }
     
     // ... and play the next or the first if current was the last video
-    const { id } = i === app.playlist.length - 1 ? app.playlist[0] : app.playlist[i + 1];
+    const { id } = (i === app.playlist.length - 1) ? app.playlist[0] : app.playlist[i + 1];
     app.currentVideoId = id;
     app.getPlaylist();
 }
@@ -257,17 +286,28 @@ window.addEventListener('load', () => {
     app.getPlaylist();
 
     // Trigger the play event on the (invisible) video 
-
     app.playPauseButton = document.getElementById('play-pause');
     
     const playPauseCallback = () => {
-        app.isPlaying = !app.isPlaying;
-        app.isPlaying ? app.currentVideo.play() : app.currentVideo.pause();
-        app.playPauseButton.className = app.isPlaying ? 'pause' : 'play';
+        try {
+            app.isPlaying = !app.isPlaying;
+            app.isPlaying ? app.currentVideo.play() : app.currentVideo.pause();
+            app.playPauseButton.className = app.isPlaying ? 'pause' : 'play';
+        } catch (e){
+            app.error(e);
+        }
     }
 
     app.canvas.addEventListener('click', playPauseCallback);
     app.playPauseButton.addEventListener('click', playPauseCallback);
+
+    // Handle mute/unmute
+    const muteUnmuteButton = document.getElementById('mute-unmute');
+    muteUnmuteButton.addEventListener('click', () => {
+        app.isMute = !app.isMute;
+        app.currentVideo.muted = app.isMute;
+        muteUnmuteButton.className = app.isMute ? 'unmute' : 'mute';
+    });
 
     const searchBar = document.getElementById('search');
     searchBar.addEventListener('keyup', function(){
