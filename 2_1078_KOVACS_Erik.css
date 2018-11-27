@@ -2,6 +2,11 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+#main {
+    max-width: 1720px;
+    margin: auto;
+}
+
 #canvas {
     background-color: #000;
     width: 100%;
