@@ -112,9 +112,11 @@ app.loadVideo = function(ctx, title, src){
     app.currentVideo = document.createElement("video");
     app.currentVideo.src = src;
     if(app.autoplay) app.currentVideo.muted = true;
-    
+
     // When playing the video, we will copy frame by frame to canvas
     app.currentVideo.addEventListener('play', () => {
+        // TODO:: draw the histogram 
+
         // requestAnimationFrame is a better alternative for setTimeout because it syncs framerate to 
         // that detected by browser - less skipped frames and z-tearing, really good for canvas stuff
         const step = () => {

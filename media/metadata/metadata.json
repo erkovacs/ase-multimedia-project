@@ -5,35 +5,50 @@
             "title": "Rick and Morty Exquisite Corpse",
             "subtitle": "Rick and Morty - Adult Swim",
             "src": "./media/videos/Rick and Morty Exquisite Corpse  Rick and Morty  Adult Swim.mp4",
-            "thumbnail": "./media/thumbnails/U3VuIE5vdiAyNSAyMDE4IDIyOjM1OjM3IEdNVCswMjAwIChFYXN0ZXJuIEV1cm9wZWFuIFN0YW5kYXJkIFRpbWUp.png"
+            "thumbnail": "./media/thumbnails/U3VuIE5vdiAyNSAyMDE4IDIyOjM1OjM3IEdNVCswMjAwIChFYXN0ZXJuIEV1cm9wZWFuIFN0YW5kYXJkIFRpbWUp.png",
+            "subtitles":{
+                "*":"-- No subtitles --"
+            }
         },
         {
             "id": "3297e5be-a265-4a9c-a044-77645eb2ba97",
             "title": "Futurama Best Moments 17",
             "subtitle": "Futurama Best Moments 17",
             "src": "./media/videos/Futurama Best Moments 17.mp4",
-            "thumbnail": "./media/thumbnails/U3VuIE5vdiAyNSAyMDE4IDIyOjQ2OjM2IEdNVCswMjAwIChFYXN0ZXJuIEV1cm9wZWFuIFN0YW5kYXJkIFRpbWUp.png"
+            "thumbnail": "./media/thumbnails/U3VuIE5vdiAyNSAyMDE4IDIyOjQ2OjM2IEdNVCswMjAwIChFYXN0ZXJuIEV1cm9wZWFuIFN0YW5kYXJkIFRpbWUp.png",
+            "subtitles":{
+                "*":"-- No subtitles --"
+            }
         },
         {
             "id": "192756de-ed7f-44ca-8b47-9279a85e16ca",
             "title": "Moonmen Music Video",
             "subtitle": "Moonmen Music Video (Complete) feat. Fart and Morty - Rick and Morty",
             "src": "./media/videos/Moonmen Music Video (Complete) feat. Fart and Morty  Rick and Morty  Adult Swim.mp4",
-            "thumbnail": "./media/thumbnails/U3VuIE5vdiAyNSAyMDE4IDIyOjU0OjM5IEdNVCswMjAwIChFYXN0ZXJuIEV1cm9wZWFuIFN0YW5kYXJkIFRpbWUp.png"
+            "thumbnail": "./media/thumbnails/U3VuIE5vdiAyNSAyMDE4IDIyOjU0OjM5IEdNVCswMjAwIChFYXN0ZXJuIEV1cm9wZWFuIFN0YW5kYXJkIFRpbWUp.png",
+            "subtitles":{
+                "*":"-- No subtitles --"
+            }
         },
         {
             "id": "6e5cdcbd-78e1-469e-94ae-3a9b429a2bad",
             "title": "Voice Recognition Elevator in Scotland",
             "subtitle": "Burnistoun - Voice Recognition Elevator in Scotland",
             "src": "./media/videos/Burnistoun - Voice Recognition Elevator in Scotland.mp4",
-            "thumbnail": "./media/thumbnails/U3VuIE5vdiAyNSAyMDE4IDIzOjAzOjEzIEdNVCswMjAwIChFYXN0ZXJuIEV1cm9wZWFuIFN0YW5kYXJkIFRpbWUp.png"
+            "thumbnail": "./media/thumbnails/U3VuIE5vdiAyNSAyMDE4IDIzOjAzOjEzIEdNVCswMjAwIChFYXN0ZXJuIEV1cm9wZWFuIFN0YW5kYXJkIFRpbWUp.png",
+            "subtitles":{
+                "*":"-- No subtitles --"
+            }
         },
         {
             "id": "7d313ee8-5b45-4d09-91ac-0d9d48b150cb",
             "title": "Joe Rogan Smokes With Elon Musk",
             "subtitle": "Joe Rogan Smokes With Elon Musk",
             "src": "./media/videos/Joe Rogan Smokes With Elon Musk.mp4",
-            "thumbnail": "./media/thumbnails/U3VuIE5vdiAyNSAyMDE4IDIzOjExOjMxIEdNVCswMjAwIChFYXN0ZXJuIEV1cm9wZWFuIFN0YW5kYXJkIFRpbWUp.png"
+            "thumbnail": "./media/thumbnails/U3VuIE5vdiAyNSAyMDE4IDIzOjExOjMxIEdNVCswMjAwIChFYXN0ZXJuIEV1cm9wZWFuIFN0YW5kYXJkIFRpbWUp.png",
+            "subtitles":{
+                "*":"-- No subtitles --"
+            }
         }
     ]
 }
