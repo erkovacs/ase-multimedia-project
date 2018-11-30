@@ -31,7 +31,7 @@ Build a video player that allows the user to view the videos in a playlist conta
 * 1p - [x] posibilitate navigare prin playlist; trecere automată la filmul următor
 * 1p - [ ] aplicare de efecte video (selectabile de către utilizator)
 * 2p - [x] desenare controale (previous, play / pause, next, progress bar) pe canvas
-* 1p - [ ] desenare histogramă în timp real pentru video
+* 1p - [X] desenare histogramă în timp real pentru video
 * 1p - [x] salvare cadru curent
 * 1p - [ ] afișare subtitrări (stocate sub formă de fișiere JSON în cadrul aplicației)
 
