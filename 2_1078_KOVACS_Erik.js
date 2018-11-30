@@ -272,22 +272,26 @@
       bvals[b]++;
     }
 
-    const rmax = Math.max.apply(null, rvals);
-    const bmax = Math.max.apply(null, bvals);
-    const gmax = Math.max.apply(null, gvals);
+    const rmax = Math.max(...rvals);
+    const gmax = Math.max(...gvals);
+    const bmax = Math.max(...bvals);
+    const rmin = Math.min(...rvals);
+    const gmin = Math.min(...gvals);
+    const bmin = Math.min(...bvals);
 
     // Helper function to draw the histograms
-    const colorbars = (max, vals, color, y) => {
+    const colorbars = (max, min, vals, color, y) => {
       app.ctx.fillStyle = color;
-      vals.forEach((i, x) => {
-        const pct = ((vals[i] / max) * app.canvas.height) / 3;
-        app.ctx.fillRect(i, y, app.canvas.width / 255, -Math.round(pct));
+      const delta = max - min;
+      vals.forEach((val, i) => {
+        const barY = ((val - min) / delta) * app.canvas.height;
+        app.ctx.fillRect(i, y, 1, -Math.ceil(barY));
       });
     };
 
-    colorbars(rmax, rvals, "rgb(255,0,0)", app.canvas.height / 3);
-    colorbars(bmax, gvals, "rgb(0,255,0)", (app.canvas.height / 3) * 2);
-    colorbars(gmax, bvals, "rgb(0,0,255)", app.canvas.height);
+    colorbars(rmax, rmin, rvals, "rgb(255,0,0)", app.canvas.height);
+    colorbars(gmax, gmin, gvals, "rgb(0,255,0)", app.canvas.height);
+    colorbars(bmax, bmin, bvals, "rgb(0,0,255)", app.canvas.height);
   };
 
   app.playNext = () => {
