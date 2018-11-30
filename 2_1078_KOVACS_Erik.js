@@ -125,8 +125,6 @@
 
     // When playing the video, we will copy frame by frame to canvas
     app.currentVideo.addEventListener("play", () => {
-      // TODO:: draw the histogram
-
       // requestAnimationFrame is a better alternative for setTimeout because it syncs framerate to
       // that detected by browser - less skipped frames and z-tearing, really good for canvas stuff
       const step = () => {
@@ -137,7 +135,11 @@
           app.canvas.width,
           app.canvas.height
         );
+
+        // Draw histogram on top of video, but use the original video as source
         if (app.isHistogramActive) app.drawHistogram(app.currentVideo);
+
+        // Finally call self
         requestAnimationFrame(step);
       };
       requestAnimationFrame(step);
@@ -160,11 +162,21 @@
         seconds.length > 1 ? seconds : 0 + seconds
       }`;
     };
-    // TODO :: Fix this slowness here
+
+    let duration = "0:00:00";
     app.currentVideo.addEventListener("timeupdate", () => {
+      // Set duration only once
+      if (duration === "0:00:00")
+        duration = timeParse(app.currentVideo.duration);
+
+      // Get current time as percent
       const position = app.currentVideo.currentTime / app.currentVideo.duration;
       scrubberFill.style.width = position * 100 + "%";
-      // time.innerHTML = `${timeParse(app.currentVideo.currentTime)} / ${timeParse(app.currentVideo.duration)}`;
+
+      // Parse the time and display it
+      time.innerHTML = `${timeParse(
+        app.currentVideo.currentTime
+      )} / ${duration}`;
     });
 
     // Allow user to scrub through the video
@@ -231,7 +243,7 @@
   };
 
   // Draws the histogram
-  // TODO:: this is not working properly
+  // TODO:: refactor this
   app.drawHistogram = rawImageData => {
     if (!app.currentVideo || !app.canvas || !app.ctx) return;
 
@@ -280,18 +292,45 @@
     const bmin = Math.min(...bvals);
 
     // Helper function to draw the histograms
-    const colorbars = (max, min, vals, color, y) => {
+    const colorbars = (max, min, vals, color, y, xScale, yScale) => {
       app.ctx.fillStyle = color;
       const delta = max - min;
       vals.forEach((val, i) => {
-        const barY = ((val - min) / delta) * app.canvas.height;
-        app.ctx.fillRect(i, y, 1, -Math.ceil(barY));
+        const barY = ((val - min) / delta) * yScale;
+        app.ctx.fillRect(i * xScale, y, 1, -Math.ceil(barY));
       });
     };
 
-    colorbars(rmax, rmin, rvals, "rgb(255,0,0)", app.canvas.height);
-    colorbars(gmax, gmin, gvals, "rgb(0,255,0)", app.canvas.height);
-    colorbars(bmax, bmin, bvals, "rgb(0,0,255)", app.canvas.height);
+    // Get the width and height to properly scale the histogram
+    const { width, height } = app.canvas;
+
+    colorbars(
+      rmax,
+      rmin,
+      rvals,
+      "rgba(255,0,0,0.7)",
+      height,
+      width / 255,
+      height
+    );
+    colorbars(
+      gmax,
+      gmin,
+      gvals,
+      "rgba(0,255,0,0.7)",
+      height,
+      width / 255,
+      height
+    );
+    colorbars(
+      bmax,
+      bmin,
+      bvals,
+      "rgba(0,0,255,0.7)",
+      height,
+      width / 255,
+      height
+    );
   };
 
   app.playNext = () => {
