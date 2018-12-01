@@ -1,4 +1,10 @@
 # ASE Multimedia Project - Video Player
+## How to run this project 
+1. Clone this repo: ` git clone https://github.com/codepadawan93/ase-multimedia-project.git`
+2. Install dependecies: ` npm install`
+3. Run the server: ` npm start ` 
+4. Add your files to `./media/movies`. Add paths to `./media/metadata/metadata.json`
+4. Navigate to [http://localhost:8080](http://localhost:8080) and view your movies!
 ## General requirements
 
 The project will be archived using the zip format. The name of the archive should follow the following pattern ``` TopicCode_GroupNumber_LASTNAME_FirstName.zip.```
@@ -31,7 +37,7 @@ Build a video player that allows the user to view the videos in a playlist conta
 * 1p - [x] posibilitate navigare prin playlist; trecere automată la filmul următor
 * 1p - [ ] aplicare de efecte video (selectabile de către utilizator)
 * 2p - [x] desenare controale (previous, play / pause, next, progress bar) pe canvas
-* 1p - [ ] desenare histogramă în timp real pentru video
+* 1p - [x] desenare histogramă în timp real pentru video
 * 1p - [x] salvare cadru curent
 * 1p - [ ] afișare subtitrări (stocate sub formă de fișiere JSON în cadrul aplicației)
 
