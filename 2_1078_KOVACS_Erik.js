@@ -285,7 +285,6 @@
   };
 
   // Draws the histogram
-  // TODO:: refactor this
   app.drawHistogram = rawImageData => {
     if (!app.currentVideo || !app.canvas || !app.ctx) return;
 
@@ -518,6 +517,15 @@
     // Prevent submit
     const searchButton = document.getElementById("search-button");
     searchButton.addEventListener("click", event => event.preventDefault());
+
+    // Register a service worker for this to be a PWA
+    if (typeof navigator.serviceWorker !== "undefined") {
+      try {
+        navigator.serviceWorker.register("ServiceWorker.js");
+      } catch (e) {
+        app.error(e);
+      }
+    }
   });
 
   // Save state upon user leaving page
