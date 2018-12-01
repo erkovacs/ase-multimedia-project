@@ -1,16 +1,58 @@
 (function() {
   let app = {};
 
-  // TODO:: settings and other stuff should be cached in localStorage
   app.metadataUrl = "./media/metadata/metadata.json";
+  app.configFile = "appConfig";
   app.errorTimeout = 4000;
   app.pauseBetween = 5000;
   app.currentVideoId = null;
-  app.isPlaying = false;
-  app.isMute = true;
-  app.autoplay = true;
-  app.isHistogramActive = false;
-  app.playlist = [];
+  app.isPlaying = true;
+
+  // Read values from localStorage or pass defaults
+  app.initialise = () => {
+    // Try to load configs from localStorage
+    app.store = window.localStorage;
+    const configJSON = app.store.getItem(app.configFile);
+    if (configJSON === null) {
+      // Load defaults
+      app.currentVideoId = null;
+      app.isPlaying = false;
+      app.isMute = true;
+      app.autoplay = true;
+      app.isHistogramActive = false;
+      app.playlist = [];
+    } else {
+      // Set preferences
+      const config = JSON.parse(configJSON);
+      for (let setting in config) {
+        app[setting] = config[setting];
+      }
+    }
+
+    // Finally, init buttons
+    const muteUnmuteButton = document.getElementById("mute-unmute");
+    muteUnmuteButton.className = app.isMute ? "unmute" : "mute";
+    const histogramCheckbox = document.getElementById("histogram");
+    histogramCheckbox.checked = app.isHistogramActive;
+    const autoplayCheckbox = document.getElementById("autoplay");
+    autoplayCheckbox.checked = app.autoplay;
+  };
+
+  // Save preferences before leaving the page
+  app.saveState = () => {
+    app.store = !app.store ? window.localStorage : app.store;
+    const { isMute, autoplay, isHistogramActive, playlist } = app;
+    // Save a JSOn with settings to localStorage
+    app.store.setItem(
+      app.configFile,
+      JSON.stringify({
+        isMute,
+        autoplay,
+        isHistogramActive,
+        playlist
+      })
+    );
+  };
 
   // This is where the fun is. It gets the videos and loads the first one in the list.
   app.getPlaylist = function() {
@@ -248,7 +290,7 @@
     if (!app.currentVideo || !app.canvas || !app.ctx) return;
 
     // Helper function
-    const comprehend0 = (start, stop, step = 1) => {
+    const zerofill = (start, stop, step = 1) => {
       let arr = [];
       for (let i = start; i < stop; i += step) {
         arr[i] = 0;
@@ -256,25 +298,32 @@
       return arr;
     };
 
-    // We will have the three distributions tables - value of pixels is index and frequency is value at index
-    let rvals = comprehend0(0, 256);
-    let gvals = comprehend0(0, 256);
-    let bvals = comprehend0(0, 256);
+    // We will have the three distributions tables - value of pixel is index and frequency is no of pixels of that value
+    let rvals = zerofill(0, 256);
+    let gvals = zerofill(0, 256);
+    let bvals = zerofill(0, 256);
 
-    // in order not to also include the histogram itself, get the pixel array from the frame that was passed in
+    // In order not to also include the histogram itself (which will result in a feedback loop), get the pixel
+    // array from the frame that was passed in rather than the canvas displayed to the user
     const virtualCanvas = document.createElement("canvas");
     virtualCanvas.height = app.canvas.height;
     virtualCanvas.width = app.canvas.width;
     const ctx = virtualCanvas.getContext("2d");
-    ctx.drawImage(rawImageData, 0, 0, app.canvas.width, app.canvas.height);
-
+    ctx.drawImage(
+      rawImageData,
+      0,
+      0,
+      virtualCanvas.width,
+      virtualCanvas.height
+    );
     const { data } = ctx.getImageData(
       0,
       0,
-      app.canvas.height,
-      app.canvas.width
+      virtualCanvas.height,
+      virtualCanvas.width
     );
 
+    // Get the frequencies of all colours from the unpacked array
     for (let i = 0; i < data.length; i += 4) {
       const r = data[i];
       const g = data[i + 1];
@@ -284,55 +333,63 @@
       bvals[b]++;
     }
 
-    const rmax = Math.max(...rvals);
-    const gmax = Math.max(...gvals);
-    const bmax = Math.max(...bvals);
-    const rmin = Math.min(...rvals);
-    const gmin = Math.min(...gvals);
-    const bmin = Math.min(...bvals);
-
     // Helper function to draw the histograms
-    const colorbars = (max, min, vals, color, y, xScale, yScale) => {
-      app.ctx.fillStyle = color;
+    const drawBar = (ctx, max, min, vals, colour, y, xScale, yScale) => {
+      ctx.fillStyle = colour;
       const delta = max - min;
       vals.forEach((val, i) => {
-        const barY = ((val - min) / delta) * yScale;
-        app.ctx.fillRect(i * xScale, y, 1, -Math.ceil(barY));
+        // Obtain a normalized value within [0, 1] based on the existing range within the image by using
+        // formula: Xi - Xmin / Xmax - Xmin
+        let normalizedVal = (val - min) / delta;
+        // Exaggerate small values; otherwise they will not be seen by user
+        normalizedVal =
+          normalizedVal < 0.1 ? normalizedVal * 10 : normalizedVal;
+        const barY = normalizedVal * yScale;
+        ctx.fillRect(i * xScale, y, 1, -Math.ceil(barY));
       });
     };
 
     // Get the width and height to properly scale the histogram
     const { width, height } = app.canvas;
 
-    colorbars(
-      rmax,
-      rmin,
-      rvals,
-      "rgba(255,0,0,0.7)",
-      height,
-      width / 255,
-      height
-    );
-    colorbars(
-      gmax,
-      gmin,
-      gvals,
-      "rgba(0,255,0,0.7)",
-      height,
-      width / 255,
-      height
-    );
-    colorbars(
-      bmax,
-      bmin,
-      bvals,
-      "rgba(0,0,255,0.7)",
-      height,
-      width / 255,
-      height
+    // Put the data into an array, calculating the minima and maxima of each array in the process
+    const bars = [
+      {
+        max: Math.max(...rvals),
+        min: Math.min(...rvals),
+        vals: rvals,
+        colour: "rgba(255,0,0,0.7)"
+      },
+      {
+        max: Math.max(...gvals),
+        min: Math.min(...gvals),
+        vals: gvals,
+        colour: "rgba(0,255,0,0.7)"
+      },
+      {
+        max: Math.max(...bvals),
+        min: Math.min(...bvals),
+        vals: bvals,
+        colour: "rgba(0,0,255,0.7)"
+      }
+    ];
+
+    // Draw each colour on top of video
+    bars.forEach(bar =>
+      drawBar(
+        app.ctx,
+        bar.max,
+        bar.min,
+        bar.vals,
+        bar.colour,
+        height,
+        width / 255,
+        height
+      )
     );
   };
 
+  // Skips to the next video
   app.playNext = () => {
     // If feature is disabled, don't do anything
     if (!app.autoplay) return;
@@ -352,6 +409,7 @@
     app.getPlaylist();
   };
 
+  // Displays search results for search in app bar
   app.getSearchResults = searchQuery => {
     // Delete the list
     const list = document.getElementById("search-results");
@@ -395,7 +453,7 @@
     return document.getElementById("search-results");
   };
 
-  // Main
+  // When page loads
   window.addEventListener("load", () => {
     // Keep track of state in app - in this case autoplay
     const autoplayElement = document.getElementById("autoplay");
@@ -403,22 +461,26 @@
       app.autoplay = !app.autoplay;
     });
 
+    // Add download action to button
     const downloadButton = document.getElementById("download-frame");
     downloadButton.addEventListener("click", () => {
       app.downloadCurrentFrame();
     });
 
+    // Allow user to activate / deactivate the display of the histogram
     const histogramCheckbox = document.getElementById("histogram");
     histogramCheckbox.addEventListener("click", () => {
       app.isHistogramActive = !app.isHistogramActive;
     });
+
+    // Initialise app
+    app.initialise();
 
     // Get the playlist and load the main video
     app.getPlaylist();
 
     // Trigger the play event on the (invisible) video
     app.playPauseButton = document.getElementById("play-pause");
-
     const playPauseCallback = () => {
       app.isPlaying = !app.isPlaying;
       app.playPauseButton.className = app.isPlaying ? "pause" : "play";
@@ -457,4 +519,7 @@
     const searchButton = document.getElementById("search-button");
     searchButton.addEventListener("click", event => event.preventDefault());
   });
+
+  // Save state upon user leaving page
+  window.addEventListener("beforeunload", () => app.saveState());
 })();
