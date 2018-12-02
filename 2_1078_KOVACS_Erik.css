@@ -53,6 +53,11 @@ body {
     background-size: contain; 
     background-color: #000; 
     background-repeat: no-repeat;
+    min-height: 100px;
+}
+
+.overflow-hidden {
+    overflow: hidden;
 }
 
 #download-frame {

@@ -55,7 +55,7 @@
   };
 
   // This is where the fun is. It gets the videos and loads the first one in the list.
-  app.getPlaylist = function() {
+  app.getPlaylist = async () => {
     // Start with an empty playlist. Easier this way
     app.resetPlaylist();
 
@@ -63,52 +63,50 @@
     app.refreshCanvas();
 
     // Get the metadata JSON where we have data about the videos
-    fetch(app.metadataUrl)
-      .then(data => data.json())
-      .then(data => {
-        // Loop through the videos
-        data.videos.forEach((video, i) => {
-          // For autoplay
-          app.playlist.push(video);
+    const dataJSON = await fetch(app.metadataUrl);
+    const data = await dataJSON.json();
 
-          const { id, title, subtitle, src, thumbnail } = video;
+    // Loop through the videos
+    data.videos.forEach((video, i) => {
+      // For autoplay
+      app.playlist.push(video);
 
-          // If we have no requested video, load our first video
-          // Conversely, if we know which video was chosen, load that
-          // Do not add the current video to list, just like YouTube
-          if (
-            (app.currentVideoId === null && i === 0) ||
-            app.currentVideoId === id
-          ) {
-            // Set the id in case it was null
-            if (!app.currentVideoId) app.currentVideoId = id;
+      const { id, title, subtitle, src, thumbnail } = video;
 
-            app.loadVideo(app.ctx, title, src);
-            return;
-          }
+      // If we have no requested video, load our first video
+      // Conversely, if we know which video was chosen, load that
+      // Do not add the current video to list, just like YouTube
+      if (
+        (app.currentVideoId === null && i === 0) ||
+        app.currentVideoId === id
+      ) {
+        // Set the id in case it was null
+        if (!app.currentVideoId) app.currentVideoId = id;
 
-          // Add rest of videos to the playlist
-          const playlistHtml = app.playlistEntryFactory(
-            id,
-            title,
-            subtitle,
-            thumbnail
-          );
-          app.playlistElement.insertAdjacentHTML("beforeend", playlistHtml);
-        });
+        app.loadVideo(app.ctx, title, src);
+        return;
+      }
 
-        // Allow switching between videos
-        const videoElements = document.querySelectorAll(".playlist-item");
-        videoElements.forEach(element => {
-          element.addEventListener("click", function(event) {
-            const id = this.dataset.id;
-            app.currentVideoId = id;
-            app.currentVideo.pause();
-            app.getPlaylist();
-          });
-        });
-      })
-      .catch(e => app.error(e));
+      // Add rest of videos to the playlist
+      const playlistHtml = app.playlistEntryFactory(
+        id,
+        title,
+        subtitle,
+        thumbnail
+      );
+      app.playlistElement.insertAdjacentHTML("beforeend", playlistHtml);
+    });
+
+    // Allow switching between videos
+    const videoElements = document.querySelectorAll(".playlist-item");
+    videoElements.forEach(element => {
+      element.addEventListener("click", function(event) {
+        const id = this.dataset.id;
+        app.currentVideoId = id;
+        app.currentVideo.pause();
+        app.getPlaylist();
+      });
+    });
   };
 
   app.refreshCanvas = () => {

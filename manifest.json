@@ -3,7 +3,7 @@
   "short_name": "ErikTube",
   "theme_color": "#2196f3",
   "background_color": "#ffffff",
-  "display": "browser",
+  "display": "fullscreen",
   "start_url": ".",
   "icons": [
     {

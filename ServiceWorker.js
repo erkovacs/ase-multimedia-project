@@ -1,5 +1,5 @@
-const serviceWorker = {};
-serviceWorker.assets = [
+const sw = {};
+sw.assets = [
   "./2_1078_KOVACS_Erik.html",
   "./media/images/icons/icon-72x72.png",
   "./lib/css/bootstrap.min.css",
@@ -10,12 +10,12 @@ serviceWorker.assets = [
   "./2_1078_KOVACS_Erik.js"
 ];
 
-serviceWorker.cacheFirst = async req => {
+sw.cacheFirst = async req => {
   const cachedResponse = await caches.match(req);
   return cachedResponse || fetch(req);
 };
 
-serviceWorker.networkFirst = async req => {
+sw.networkFirst = async req => {
   const cache = await caches.open("appNetworkCache");
   try {
     const res = await fetch(req);
@@ -26,28 +26,26 @@ serviceWorker.networkFirst = async req => {
   }
 };
 
-serviceWorker.cacheVideos = async cache => {
+sw.cacheVideos = async cache => {
   const metadataJSON = await fetch("./media/metadata/metadata.json");
-  const metadata = JSON.parse(metadataJSON);
+  const metadata = await metadataJSON.json();
   metadata.videos.forEach(video => {
-    const srcRes = await fetch(video.src);
-    const thumbnailRes = await fetch(video.thumbnail);
-    cache.addAll(video.src, [srcRes, thumbnailRes]);
+    cache.addAll([video.src, video.thumbnail]);
   });
 };
 
 self.addEventListener("install", async event => {
   const cache = await caches.open("appAssetsCache");
-  cache.addAll(serviceWorker.assets);
-  serviceWorker.cacheVideos(cache);
+  cache.addAll(sw.assets);
+  sw.cacheVideos(cache);
 });
 
 self.addEventListener("fetch", event => {
   const req = event.request;
   const url = new URL(req.url);
   if (url.origin === location.origin) {
-    event.respondWith(serviceWorker.cacheFirst(req));
+    event.respondWith(sw.cacheFirst(req));
   } else {
-    event.respondWith(serviceWorker.networkFirst(req));
+    event.respondWith(sw.networkFirst(req));
   }
 });
