@@ -111,6 +111,9 @@
 
   app.refreshCanvas = () => {
     app.canvas = app.canvas ? app.canvas : document.querySelector("canvas");
+    // 720p will suffice
+    app.canvas.width = 1280;
+    app.canvas.height = 720;
     app.ctx = app.ctx ? app.ctx : app.canvas.getContext("2d");
     app.ctx.clearRect(0, 0, app.canvas.width, app.canvas.height);
   };
@@ -160,6 +163,9 @@
     }
 
     app.currentVideo = document.createElement("video");
+    app.currentVideo.width = app.canvas.width;
+    app.currentVideo.height = app.canvas.height;
+
     app.currentVideo.src = src;
     if (app.autoplay) app.currentVideo.muted = true;
 
@@ -175,7 +181,8 @@
           app.canvas.width,
           app.canvas.height
         );
-
+          
+        
         // Draw histogram on top of video, but use the original video as source
         if (app.isHistogramActive) app.drawHistogram(app.currentVideo);
 
@@ -330,7 +337,7 @@
       bvals[b]++;
     }
 
-    // Helper function to draw the histograms
+    // Helper function to draw the histogram bars
     const drawBar = (ctx, max, min, vals, colour, y, xScale, yScale) => {
       ctx.fillStyle = colour;
       const delta = max - min;
@@ -338,11 +345,12 @@
         // Obtain a normalized value within [0, 1] based on the existing range within the image by using
         // formula: Xi - Xmin / Xmax - Xmin
         let normalizedVal = (val - min) / delta;
-        // Exaggerate small values; otherwise they will not be seen by user
+        // Exaggerate small values; otherwise they will not be seen by user. Since we know there are
+        // 255 bars at most, xScale will also be the width of a single bar
         normalizedVal =
           normalizedVal < 0.1 ? normalizedVal * 10 : normalizedVal;
         const barY = normalizedVal * yScale;
-        ctx.fillRect(i * xScale, y, 1, -Math.ceil(barY));
+        ctx.fillRect(i * xScale, y, xScale, -Math.ceil(barY));
       });
     };
 
