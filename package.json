@@ -4,7 +4,7 @@
   "description": "ASE Multimedia Project - Video Player",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/http-server -d false -i false",
+    "start": "./node_modules/.bin/http-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
