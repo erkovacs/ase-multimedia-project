@@ -1,13 +1,13 @@
 const sw = {};
 sw.assets = [
-  "./2_1078_KOVACS_Erik.html",
+  "./2_1078_KOVACS_ERIK_ROBERT.html",
   "./media/images/icons/icon-72x72.png",
   "./lib/css/bootstrap.min.css",
-  "./2_1078_KOVACS_Erik.css",
+  "./2_1078_KOVACS_ERIK_ROBERT.css",
   "./lib/font-awesome-4.7.0/css/font-awesome.min.css",
   "./lib/font-awesome-4.7.0/fonts/fontawesome-webfont.woff2?v=4.7.0",
   "./lib/font-awesome-4.7.0/fonts/fontawesome-webfont.ttf?v=4.7.0 ",
-  "./2_1078_KOVACS_Erik.js"
+  "./2_1078_KOVACS_ERIK_ROBERT.js"
 ];
 
 sw.cacheFirst = async req => {
