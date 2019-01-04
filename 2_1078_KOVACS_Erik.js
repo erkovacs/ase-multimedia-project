@@ -63,50 +63,55 @@
     app.refreshCanvas();
 
     // Get the metadata JSON where we have data about the videos
-    const dataJSON = await fetch(app.metadataUrl);
-    const data = await dataJSON.json();
+    try{
+      const dataJSON = await fetch(app.metadataUrl);
+      const data = await dataJSON.json();
 
-    // Loop through the videos
-    data.videos.forEach((video, i) => {
-      // For autoplay
-      app.playlist.push(video);
+      // Loop through the videos
+      data.videos.forEach((video, i) => {
+        // For autoplay
+        app.playlist.push(video);
 
-      const { id, title, subtitle, src, thumbnail } = video;
+        const { id, title, subtitle, src, thumbnail } = video;
 
-      // If we have no requested video, load our first video
-      // Conversely, if we know which video was chosen, load that
-      // Do not add the current video to list, just like YouTube
-      if (
-        (app.currentVideoId === null && i === 0) ||
-        app.currentVideoId === id
-      ) {
-        // Set the id in case it was null
-        if (!app.currentVideoId) app.currentVideoId = id;
+        // If we have no requested video, load our first video
+        // Conversely, if we know which video was chosen, load that
+        // Do not add the current video to list, just like YouTube
+        if (
+          (app.currentVideoId === null && i === 0) ||
+          app.currentVideoId === id
+        ) {
+          // Set the id in case it was null
+          if (!app.currentVideoId) app.currentVideoId = id;
 
-        app.loadVideo(app.ctx, title, src);
-        return;
-      }
+          app.loadVideo(app.ctx, title, src);
+          return;
+        }
 
-      // Add rest of videos to the playlist
-      const playlistHtml = app.playlistEntryFactory(
-        id,
-        title,
-        subtitle,
-        thumbnail
-      );
-      app.playlistElement.insertAdjacentHTML("beforeend", playlistHtml);
-    });
-
-    // Allow switching between videos
-    const videoElements = document.querySelectorAll(".playlist-item");
-    videoElements.forEach(element => {
-      element.addEventListener("click", function(event) {
-        const id = this.dataset.id;
-        app.currentVideoId = id;
-        app.currentVideo.pause();
-        app.getPlaylist();
+        // Add rest of videos to the playlist
+        const playlistHtml = app.playlistEntryFactory(
+          id,
+          title,
+          subtitle,
+          thumbnail
+        );
+        app.playlistElement.insertAdjacentHTML("beforeend", playlistHtml);
       });
-    });
+
+      // Allow switching between videos
+      const videoElements = document.querySelectorAll(".playlist-item");
+      videoElements.forEach(element => {
+        element.addEventListener("click", function(event) {
+          const id = this.dataset.id;
+          app.currentVideoId = id;
+          app.currentVideo.pause();
+          app.getPlaylist();
+        });
+      });
+
+    } catch (e) {
+      app.error(e);
+    }
   };
 
   app.refreshCanvas = () => {
